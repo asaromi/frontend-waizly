@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { TASK_PROGRESS } from '../../utils/constants.js'
-import { dummyTasks } from '../../utils/data.js'
-import LoaderSpin from '../ui/LoaderSpin.jsx'
-import CompleteIcon from '../ui/icons/CompleteIcon.jsx'
-import DeleteIcon from '../ui/icons/DeleteIcon.jsx'
+import { TASK_PROGRESS } from '../../utils/constants'
+import { dummyTasks } from '../../utils/data'
+import LoaderSpin from '../ui/LoaderSpin'
+import MarkIcon from '../ui/icons/MarkIcon'
+import DeleteIcon from '../ui/icons/DeleteIcon'
+import EditIcon from '../ui/icons/EditIcon'
 
-const TodoCard = ({ id, description, title, progress, togglePopupDelete }) => {
+const TodoCard = ({ id, description, progress, title, selectTask, toggleDeletePopup, toggleEditModal }) => {
   const isComplete = progress === TASK_PROGRESS.COMPLETED.VALUE
   const completeStyle = isComplete && 'text-gray-300 line-through' || ''
 
   const [newTaskLoading, setNewTaskLoading] = React.useState(true)
   const loadingStyle = newTaskLoading && 'pointer-events-none' || ''
+
   useEffect(() => {
     const ids = dummyTasks.map((task) => task.id)
     const isExist = ids.includes(id)
@@ -35,14 +37,21 @@ const TodoCard = ({ id, description, title, progress, togglePopupDelete }) => {
       )}
 
       <div className="flex gap-x-2.5">
+        <div className="w-fit flex justify-center items-center">
+          <MarkIcon id={id} isSelect={isComplete} />
+        </div>
+
         <div className="w-full">
           <h3 className={`text-lg font-bold ${completeStyle}`}>{title}</h3>
           <p className="text-base">{description}</p>
         </div>
 
         <div className="w-fit flex flex-col justify-between">
-          <CompleteIcon id={id} isComplete={isComplete} />
-          <DeleteIcon id={id} popupDelete={togglePopupDelete} />
+          <EditIcon
+            showEdit={toggleEditModal}
+            selectTask={() => selectTask({ id, title, description, progress })}
+          />
+          <DeleteIcon id={id} popupDelete={toggleDeletePopup} />
         </div>
       </div>
     </div>
@@ -52,9 +61,11 @@ const TodoCard = ({ id, description, title, progress, togglePopupDelete }) => {
 TodoCard.propTypes = {
   id: PropTypes.number.isRequired,
   description: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
   progress: PropTypes.number.isRequired,
-  togglePopupDelete: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  selectTask: PropTypes.func.isRequired,
+  toggleDeletePopup: PropTypes.func.isRequired,
+  toggleEditModal: PropTypes.func.isRequired,
 }
 
 export default TodoCard

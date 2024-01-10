@@ -10,19 +10,20 @@ import useForm from '../../hooks/useForm'
 import { useTaskActions } from '../../stores/taskStore'
 import { TASK_PROGRESS } from '../../utils/constants'
 
-const CreateTask = ({ progress, show, toggleShow }) => {
-  const { addTask } = useTaskActions()
+const EditTask = ({ task, show, toggleShow }) => {
+  const { updateTaskData } = useTaskActions()
+  let { id } = task || {}
   const initialValues = {
     title: '',
     description: '',
-    progress: progress || TASK_PROGRESS.TODO.VALUE,
+    progress: TASK_PROGRESS.TODO.VALUE,
   }
 
   const handleSubmit = (values) => {
     const title = values?.title || undefined
     const description = values?.description || undefined
     const progress = values?.progress || TASK_PROGRESS.TODO.VALUE
-    addTask({ title, description, progress })
+    updateTaskData({ id, data: { title, description, progress } })
   }
 
   const closeModal = () => {
@@ -30,11 +31,24 @@ const CreateTask = ({ progress, show, toggleShow }) => {
   }
 
   const {
-    values,
     submitLoading,
-    handleChange,
+    values,
     formSubmit,
+    handleChange,
+    resetForm,
+    setValues
   } = useForm({ initialValues, handleSubmit, closeModal })
+
+  React.useEffect(() => {
+    id = task?.id
+    setValues({
+      title: task?.title || '',
+      description: task?.description || '',
+      progress: task?.progress || TASK_PROGRESS.TODO.VALUE,
+    })
+
+    return () => resetForm()
+  }, [show])
 
   return show && (
     <div
@@ -42,7 +56,7 @@ const CreateTask = ({ progress, show, toggleShow }) => {
     >
       <div className="w-1/3 bg-white rounded-md p-5 transition-all ease-in-out decoration-700">
         <div className="relative">
-          <h2 className="font-bold text-lg text-center mb-4">Create new task</h2>
+          <h2 className="font-bold text-lg text-center mb-4">Update Task #{id}</h2>
 
           <button
             className="absolute top-0 right-0 cursor-pointer"
@@ -58,21 +72,18 @@ const CreateTask = ({ progress, show, toggleShow }) => {
               <InputText
                 label="Title"
                 name="title"
-                className={progress !== undefined && "col-span-2" || "col-span-3"}
+                className="col-span-2"
                 placeholder="Title"
                 value={values.title}
                 onChange={handleChange}
               />
-
-              {progress !== undefined && (
-                <SelectInput
-                  label="Progress"
-                  name="progress"
-                  options={Object.values(TASK_PROGRESS)}
-                  value={values.progress}
-                  onChange={handleChange}
-                />
-              )}
+              <SelectInput
+                label="Progress"
+                name="progress"
+                options={Object.values(TASK_PROGRESS)}
+                value={values.progress}
+                onChange={handleChange}
+              />
             </div>
 
             <InputText
@@ -87,11 +98,11 @@ const CreateTask = ({ progress, show, toggleShow }) => {
 
           <div className="flex justify-end">
             <button
-              className={`w-78.75px bg-blue-400 text-white px-4 mt-5 pt-1 pb-1.5 rounded float-end font-semibold ${submitLoading && 'pointer-events-none h-75'}`}
+              className={`w-85px bg-blue-400 text-white px-4 mt-5 pt-1 pb-1.5 rounded float-end font-semibold ${submitLoading && 'pointer-events-none'}`}
               disabled={submitLoading}
               type="submit"
             >
-              {submitLoading ? (<LoaderSpin />) : 'Create'}
+              {submitLoading ? (<LoaderSpin/>) : 'Update'}
             </button>
           </div>
         </form>
@@ -100,10 +111,10 @@ const CreateTask = ({ progress, show, toggleShow }) => {
   )
 }
 
-CreateTask.propTypes = {
-  progress: PropTypes.number,
-  show: PropTypes.bool.isRequired,
-  toggleShow: PropTypes.func.isRequired,
+EditTask.propTypes = {
+  task: PropTypes.object,
+  show: PropTypes.bool,
+  toggleShow: PropTypes.func,
 }
 
-export default CreateTask
+export default EditTask

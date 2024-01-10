@@ -17,6 +17,8 @@ export default {
         '62px': '62px',
         '65px': '65px',
         '73.45px': '73.45px',
+        '78.75px': '78.75px',
+        '85px': '85px',
       },
       screens: {
         base: '320px',
@@ -33,6 +35,8 @@ export default {
         '62px': '62px',
         '65px': '65px',
         '73.45px': '73.45px',
+        '78.75px': '78.75px',
+        '85px': '85px',
       },
     },
     maxHeight: (theme) => ({

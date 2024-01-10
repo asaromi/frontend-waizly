@@ -5,7 +5,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons'
 
 const Header = () => {
   return (
-    <div className="w-full h-16 bg-white fixed top-0 left-0 flex items-center justify-between pr-4">
+    <header className="w-full h-16 bg-white fixed top-0 left-0 flex items-center justify-between pr-4">
       <div className="flex items-center space-x-5 h-full">
         <button
           className="text-gray-600 focus:outline-none bg-gray-800 h-full w-fit p-4"
@@ -17,7 +17,7 @@ const Header = () => {
           Todo App - React
         </h1>
       </div>
-    </div>
+    </header>
   )
 }
 

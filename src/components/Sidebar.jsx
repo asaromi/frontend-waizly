@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 // import routes from '../routes'
 // import NavLink from './ui/NavLink'
-import Header from './Header.jsx'
+import Header from './Header'
 
 const Sidebar = ({ toggleSidebar }) => {
   // const [routeList, setRouteList] = React.useState([])

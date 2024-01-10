@@ -4,7 +4,7 @@ import { useDebounceSearch } from './useDebounce'
 import { useTaskActions } from '../stores/taskStore'
 
 const useSearchQuery = () => {
-  const { getTodoTasks } = useTaskActions()
+  const { filterTasks } = useTaskActions()
   const [search, setSearch] = React.useState('')
   const [searchLoading, setSearchLoading] = React.useState(false)
   const [, setSearchParams] = useSearchParams()
@@ -14,7 +14,7 @@ const useSearchQuery = () => {
     fn: () => {
       setSearchParams({ q: search })
       setSearchLoading(() => false)
-      getTodoTasks(search)
+      filterTasks({ search })
     }
   })
 

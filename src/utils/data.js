@@ -1,4 +1,4 @@
-import { TASK_PROGRESS } from './constants.js'
+import { TASK_PROGRESS } from './constants'
 
 export const dummyTasks = [
   {

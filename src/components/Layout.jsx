@@ -1,8 +1,8 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
-import routes from '../routes.js'
-import Header from './Header.jsx'
+import routes from '../routes'
+import Header from './Header'
 
 const Layout = () => {
   // const [isOpenSidebar, setIsOpenSidebar] = React.useState(false)

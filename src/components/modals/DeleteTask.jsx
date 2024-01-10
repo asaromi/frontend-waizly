@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useTaskActions } from '../../stores/taskStore'
-import LoaderSpin from '../ui/LoaderSpin.jsx'
+import LoaderSpin from '../ui/LoaderSpin'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 
 const DeleteTask = ({ id, cancelDelete }) => {
-  const { getTodoTasks, removeTask } = useTaskActions()
+  const { filterTasks, removeTask } = useTaskActions()
   const [submitLoading, setSubmitLoading] = React.useState(false)
 
   const submitDelete = () => {
@@ -15,7 +15,7 @@ const DeleteTask = ({ id, cancelDelete }) => {
 
     setSubmitLoading(() => true)
     removeTask(id)
-    getTodoTasks()
+    filterTasks()
 
     setTimeout(() => {
       setSubmitLoading(() => false)
@@ -47,8 +47,9 @@ const DeleteTask = ({ id, cancelDelete }) => {
             Cancel
           </button>
           <button
-            className="bg-red-500 text-white rounded-md px-2.5 py-1.5 w-65px flex justify-center items-center"
+            className={`bg-red-500 text-white rounded-md px-2.5 py-1.5 w-65px flex justify-center items-center ${submitLoading && 'pointer-events-none'}`}
             type="button"
+            disabled={submitLoading}
             onClick={submitDelete}
           >
             {submitLoading ? <LoaderSpin /> : 'Delete'}
